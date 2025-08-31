@@ -29,7 +29,7 @@ export default function Register() {
       if (r?.error) {
         setError(r.error);
       } else {
-        router.push('/login');
+        router.push('/signin');
       }
     } catch {
       setError('Registration failed. Please try again.');

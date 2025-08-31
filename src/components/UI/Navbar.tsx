@@ -1,15 +1,16 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X } from 'lucide-react';
+import Image from 'next/image';
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/features", label: "Features" },
-  { href: "/pricing", label: "Pricing" },
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/features', label: 'Features' },
+  { href: '/pricing', label: 'Pricing' },
 ];
 
 const Navbar: React.FC = () => {
@@ -25,8 +26,10 @@ const Navbar: React.FC = () => {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 md:px-6">
         {/* Left - Logo */}
         <Link href="/" className="flex items-center gap-2">
-          <img src="/Bee.png" alt="PlanBee Logo" className="h-8 w-8" />
-          <span className="text-xl font-bold tracking-tight text-gray-900">PlanBee</span>
+          <Image src="/Bee.png" alt="PlanBee Logo" width={32} height={32} />
+          <span className="text-xl font-bold tracking-tight text-gray-900">
+            PlanBee
+          </span>
         </Link>
 
         {/* Center - Links (desktop) */}
@@ -36,7 +39,7 @@ const Navbar: React.FC = () => {
               key={l.href}
               href={l.href}
               className={`text-sm font-medium transition-colors hover:text-gray-900 ${
-                pathname === l.href ? "text-gray-900" : "text-gray-600"
+                pathname === l.href ? 'text-gray-900' : 'text-gray-600'
               }`}
             >
               {l.label}
@@ -79,7 +82,9 @@ const Navbar: React.FC = () => {
                 key={l.href}
                 href={l.href}
                 className={`rounded-lg px-2 py-2 text-sm font-medium ${
-                  pathname === l.href ? "bg-gray-100 text-gray-900" : "text-gray-700 hover:bg-gray-50"
+                  pathname === l.href
+                    ? 'bg-gray-100 text-gray-900'
+                    : 'text-gray-700 hover:bg-gray-50'
                 }`}
               >
                 {l.label}

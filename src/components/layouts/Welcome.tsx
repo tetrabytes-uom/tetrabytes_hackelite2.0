@@ -37,7 +37,7 @@ export default function Welcome() {
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/register"
+                href="/signup"
                 className="inline-flex items-center justify-center rounded-xl bg-[#70A961] px-5 py-3 text-sm font-semibold text-white hover:bg-[#5f8c4b]"
               >
                 Start for free

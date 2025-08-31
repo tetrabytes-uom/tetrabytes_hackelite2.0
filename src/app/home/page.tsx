@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import Navbar from "@/components/HomePage/Navbar";
+import React from 'react';
+import Link from 'next/link';
+import Navbar from '@/components/UI/Navbar';
 import {
   Sparkles,
   Clock,
@@ -11,7 +11,8 @@ import {
   LayoutList,
   CheckCircle,
   ArrowRight,
-} from "lucide-react";
+} from 'lucide-react';
+import Image from 'next/image';
 
 export default function Home() {
   return (
@@ -65,15 +66,17 @@ export default function Home() {
           <div className="relative">
             <div className="rounded-2xl border bg-white p-4 shadow-xl">
               <div className="mb-3 flex items-center justify-between">
-                <div className="text-sm font-semibold">Your 10-week AWS Plan</div>
+                <div className="text-sm font-semibold">
+                  Your 10-week AWS Plan
+                </div>
                 <span className="text-xs text-gray-500">Auto-synced</span>
               </div>
               <div className="space-y-2">
                 {[
-                  { title: "Week 1 · Cloud basics", done: true },
-                  { title: "Week 2 · IAM & Security", done: true },
-                  { title: "Week 3 · Networking (VPC)", done: false },
-                  { title: "Week 4 · Compute (EC2)", done: false },
+                  { title: 'Week 1 · Cloud basics', done: true },
+                  { title: 'Week 2 · IAM & Security', done: true },
+                  { title: 'Week 3 · Networking (VPC)', done: false },
+                  { title: 'Week 4 · Compute (EC2)', done: false },
                 ].map((i, idx) => (
                   <div
                     key={idx}
@@ -82,7 +85,7 @@ export default function Home() {
                     <div className="flex items-center gap-3">
                       <div
                         className={`h-4 w-4 rounded-full border ${
-                          i.done ? "bg-[#70A961]" : "bg-white"
+                          i.done ? 'bg-[#70A961]' : 'bg-white'
                         }`}
                       />
                       <p className="text-sm font-medium">{i.title}</p>
@@ -123,7 +126,10 @@ export default function Home() {
       </section>
 
       {/* How it works */}
-      <section id="how-it-works" className="mx-auto max-w-7xl px-4 py-16 md:px-6">
+      <section
+        id="how-it-works"
+        className="mx-auto max-w-7xl px-4 py-16 md:px-6"
+      >
         <h2 className="text-2xl font-bold md:text-3xl">How it works</h2>
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           <Step
@@ -149,7 +155,9 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="grid items-center gap-8 md:grid-cols-2">
             <div>
-              <h3 className="text-2xl font-bold md:text-3xl">Certification Mode</h3>
+              <h3 className="text-2xl font-bold md:text-3xl">
+                Certification Mode
+              </h3>
               <p className="mt-3 text-gray-200">
                 Syllabus-aligned learning paths, mock readiness checks, and
                 exam-style reviews for AWS, PMP, and more.
@@ -179,19 +187,19 @@ export default function Home() {
         <div className="mt-8 grid gap-6 md:grid-cols-3">
           {[
             {
-              q: "I finally passed AWS on my first try.",
-              a: "Shifts my plan whenever work gets busy.",
-              name: "Praveesha DS.",
+              q: 'I finally passed AWS on my first try.',
+              a: 'Shifts my plan whenever work gets busy.',
+              name: 'Praveesha DS.',
             },
             {
-              q: "My study streak is alive!",
-              a: "The gentle nudges are perfect, not spammy.",
-              name: "Heshan Y.",
+              q: 'My study streak is alive!',
+              a: 'The gentle nudges are perfect, not spammy.',
+              name: 'Heshan Y.',
             },
             {
-              q: "Way less overwhelming.",
-              a: "It breaks down big goals into daily, doable tasks.",
-              name: "Ishan H.",
+              q: 'Way less overwhelming.',
+              a: 'It breaks down big goals into daily, doable tasks.',
+              name: 'Ishan H.',
             },
           ].map((t, i) => (
             <blockquote key={i} className="rounded-2xl border p-6 shadow-sm">
@@ -234,7 +242,7 @@ export default function Home() {
       <footer className="border-t">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 text-sm text-gray-600 md:flex-row md:px-6">
           <div className="flex items-center gap-2">
-            <img src="/Bee.png" alt="PlanBee" className="h-5 w-5" />
+            <Image src="/Bee.png" alt="PlanBee" width={20} height={20} />
             <span>© {new Date().getFullYear()} PlanBee</span>
           </div>
           <div className="flex gap-6">

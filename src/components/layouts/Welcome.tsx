@@ -37,7 +37,7 @@ export default function Welcome() {
             </p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
-                href="/signup"
+                href="/register"
                 className="inline-flex items-center justify-center rounded-xl bg-[#70A961] px-5 py-3 text-sm font-semibold text-white hover:bg-[#5f8c4b]"
               >
                 Start for free
@@ -165,7 +165,7 @@ export default function Welcome() {
             </div>
             <div className="flex gap-3">
               <Link
-                href="/signup"
+                href="/register"
                 className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-100"
               >
                 Try it now

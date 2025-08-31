@@ -50,13 +50,13 @@ const Navbar: React.FC = () => {
         {/* Right - Buttons (desktop) */}
         <div className="hidden items-center gap-3 md:flex">
           <Link
-            href="/signin"
+            href="/login"
             className="rounded-xl border px-4 py-2 text-sm font-semibold text-gray-800 transition-colors hover:bg-gray-50"
           >
             Sign in
           </Link>
           <Link
-            href="/signup"
+            href="/register"
             className="rounded-xl bg-[#70A961] px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-[#5f8c4b]"
           >
             Get started
@@ -92,13 +92,13 @@ const Navbar: React.FC = () => {
             ))}
             <div className="mt-2 flex gap-2">
               <Link
-                href="/signin"
+                href="/login"
                 className="flex-1 rounded-lg border px-3 py-2 text-center text-sm font-semibold"
               >
                 Sign in
               </Link>
               <Link
-                href="/signup"
+                href="/register"
                 className="flex-1 rounded-lg bg-[#70A961] px-3 py-2 text-center text-sm font-semibold text-white"
               >
                 Get started

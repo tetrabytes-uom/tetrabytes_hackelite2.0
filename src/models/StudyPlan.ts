@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { StudyPlanType } from '@/types/StudyPlanType';
 
-const studyPlanSchema = new Schema<StudyPlanType>(
+const StudyPlanSchema = new Schema<StudyPlanType>(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -29,4 +29,4 @@ const studyPlanSchema = new Schema<StudyPlanType>(
 );
 
 export default mongoose.models.StudyPlan ||
-  mongoose.model<StudyPlanType>('StudyPlan', studyPlanSchema);
+  mongoose.model<StudyPlanType>('StudyPlan', StudyPlanSchema);

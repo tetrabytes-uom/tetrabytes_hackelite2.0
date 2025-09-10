@@ -1,11 +1,22 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]/route';
 
 // Initialize Gemini AI
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if user is authenticated
+    const session = await getServerSession(authOptions);
+    
+    if (!session) {
+      return NextResponse.json(
+        { error: 'Unauthorized. Please sign in to use the AI study coach.' },
+        { status: 401 }
+      );
+    }
     // Get the user's prompt and optional current schedule from the request
     const { prompt, currentSchedule } = await request.json();
 

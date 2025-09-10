@@ -5,7 +5,6 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
-  BookOpen,
   Target,
   Brain,
   Plus,
@@ -13,7 +12,6 @@ import {
   TrendingUp,
   Home,
   Settings,
-  User,
   Menu,
   X,
   Calendar,
@@ -113,11 +111,14 @@ export default function Dashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">
-                Welcome back, {session?.user?.name || session?.user?.email || "Student"}!
+                Welcome back,{" "}
+                {session?.user?.name || session?.user?.email || "Student"}!
               </span>
               <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-medium">
-                  {(session?.user?.name || session?.user?.email || "S").charAt(0).toUpperCase()}
+                  {(session?.user?.name || session?.user?.email || "S")
+                    .charAt(0)
+                    .toUpperCase()}
                 </span>
               </div>
             </div>
@@ -175,7 +176,9 @@ export default function Dashboard() {
                 <div className="flex items-center">
                   <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-medium">
-                      {(session?.user?.name || session?.user?.email || "S").charAt(0).toUpperCase()}
+                      {(session?.user?.name || session?.user?.email || "S")
+                        .charAt(0)
+                        .toUpperCase()}
                     </span>
                   </div>
                   <div className="ml-3">

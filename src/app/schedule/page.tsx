@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Calendar,
   Plus,
@@ -370,7 +371,7 @@ export default function SchedulePage() {
               <ul className="space-y-2">
                 {sidebarItems.map((item, index) => (
                   <li key={index}>
-                    <a
+                    <Link
                       href={item.href}
                       className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
                         item.active
@@ -380,7 +381,7 @@ export default function SchedulePage() {
                     >
                       <item.icon className="h-5 w-5 mr-3" />
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

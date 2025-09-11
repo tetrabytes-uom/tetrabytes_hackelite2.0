@@ -161,19 +161,64 @@ Before running this project, ensure you have the following installed:
    Create a `.env.local` file in the root directory with the following variables:
 
    ```env
-   # Database
+   # ===========================================
+   # REQUIRED ENVIRONMENT VARIABLES
+   # ===========================================
+
+   # Database Configuration
    MONGODB_URI=mongodb://localhost:27017/planbee
+   # For production, use MongoDB Atlas or similar:
+   # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/planbee
 
-   # Authentication
-   NEXTAUTH_SECRET=your-secret-key
+   # Authentication (NextAuth.js)
+   NEXTAUTH_SECRET=your-super-secret-key-here-change-this-in-production
    NEXTAUTH_URL=http://localhost:3000
+   # For production:
+   # NEXTAUTH_URL=https://your-domain.com
 
-   # Google AI
-   GOOGLE_AI_API_KEY=your-google-ai-api-key
+   # Google AI API (Required for AI Study Coach)
+   GOOGLE_AI_API_KEY=your-google-ai-api-key-here
 
-   # Optional: For production
+   # ===========================================
+   # OPTIONAL ENVIRONMENT VARIABLES
+   # ===========================================
+
+   # Application URL (for production deployments)
    NEXT_PUBLIC_APP_URL=https://your-domain.com
+
+   # Email Configuration (for notifications - optional)
+   EMAIL_SERVER_HOST=smtp.gmail.com
+   EMAIL_SERVER_PORT=587
+   EMAIL_SERVER_USER=your-email@gmail.com
+   EMAIL_SERVER_PASSWORD=your-app-password
+   EMAIL_FROM=noreply@planbee.com
+
+   # Analytics & Monitoring (optional)
+   NEXT_PUBLIC_ANALYTICS_ID=your-google-analytics-id
+   SENTRY_DSN=your-sentry-dsn-for-error-tracking
+
+   # Development Settings
+   NODE_ENV=development
+   DEBUG=true
+
+   # ===========================================
+   # SECURITY NOTES
+   # ===========================================
+   # - Never commit .env files to version control
+   # - Use strong, unique secrets for production
+   # - Rotate API keys regularly
+   # - Use environment-specific values (dev/staging/prod)
    ```
+
+   ### Environment Variables Explanation:
+
+   - **`MONGODB_URI`**: Connection string for your MongoDB database
+   - **`NEXTAUTH_SECRET`**: Secret key for JWT token encryption (generate a random string)
+   - **`NEXTAUTH_URL`**: Base URL of your application
+   - **`GOOGLE_AI_API_KEY`**: API key from Google AI Studio for the AI study coach
+   - **`NEXT_PUBLIC_APP_URL`**: Public URL for client-side access (must start with NEXT*PUBLIC*)
+   - **Email variables**: For sending notifications (optional, requires email service setup)
+   - **Analytics variables**: For tracking and error monitoring (optional)
 
 4. **Database Setup:**
    Ensure MongoDB is running locally or update `MONGODB_URI` to point to your cloud database.

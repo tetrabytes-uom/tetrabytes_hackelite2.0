@@ -165,7 +165,7 @@ export default function Welcome() {
             </div>
             <div className="flex gap-3">
               <Link
-                href="/register"
+                href="/signup"
                 className="rounded-xl bg-white px-5 py-3 text-sm font-semibold text-gray-900 hover:bg-gray-100"
               >
                 Try it now

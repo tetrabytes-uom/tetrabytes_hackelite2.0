@@ -12,7 +12,7 @@ const slotSchema = z
   })
   .refine(
     (s: { startMin: number; endMin: number }) => s.startMin < s.endMin,
-    { message: "startMin must be < endMin" }
+    { message: "Start time must be before end time" }
   );
 
 const daySchema = z.object({
@@ -69,6 +69,7 @@ export async function GET(req: NextRequest) {
       doc = await Availability.create({ userId, timezone: "Asia/Colombo" });
     }
     return NextResponse.json(doc);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     const status = e?.message === "Unauthorized" ? 401 : 500;
     return NextResponse.json({ error: e.message }, { status });
@@ -89,6 +90,7 @@ export async function PUT(req: NextRequest) {
       { upsert: true, new: true }
     );
     return NextResponse.json(doc);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
     if (e.name === "ZodError") {
       return NextResponse.json({ error: e.flatten() }, { status: 400 });

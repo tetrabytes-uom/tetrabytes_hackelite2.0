@@ -1,36 +1,32 @@
 'use client';
 
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 import Welcome from '@/components/layouts/Welcome';
 import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import Loading from '@/components/UI/Loading';
 
 export default function Home() {
   const { status } = useSession();
   const router = useRouter();
 
-  const showSession = () => {
+  useEffect(() => {
     if (status === 'authenticated') {
-      return (
-        <button
-          className="border border-solid border-black rounded"
-          onClick={() => {
-            signOut({ redirect: false }).then(() => {
-              router.push('/');
-            });
-          }}
-        >
-          Sign Out
-        </button>
-      );
-    } else if (status === 'loading') {
-      return <span className="text-[#888] text-sm mt-7">Loading...</span>;
-    } else {
-      return <Welcome />;
+      router.push('/dashboard');
     }
-  };
+  }, [status, router]);
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
-      {showSession()}
+      {status === 'loading' ? (
+        <span className="text-[#888] text-sm mt-7">
+          <Loading />
+        </span>
+      ) : status === 'authenticated' ? (
+        <span className="text-[#888] text-sm mt-7">Redirecting...</span>
+      ) : (
+        <Welcome />
+      )}
     </main>
   );
 }

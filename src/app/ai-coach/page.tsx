@@ -3,12 +3,8 @@
 import { useState, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import {
-  Send,
-  Brain,
-  RefreshCw,
-  ArrowLeft,
-} from "lucide-react";
+import { Send, Brain, RefreshCw, ArrowLeft } from "lucide-react";
+import { useToast } from "@/components/UI/Toast";
 import ChatMessage from "@/components/ai-coach/ChatMessage";
 import QuickPrompts from "@/components/ai-coach/QuickPrompts";
 import TypingIndicator from "@/components/ai-coach/TypingIndicator";
@@ -24,6 +20,7 @@ interface Message {
 export default function AICoach() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { showToast } = useToast();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -146,19 +143,62 @@ export default function AICoach() {
     }
   };
 
-  const savePlanToDashboard = () => {
-    // TODO: Implement saving plan to user's dashboard
-    console.log("Saving plan to dashboard:", currentPlan);
-    // For now, show a success message
-    const successMessage: Message = {
-      id: (Date.now() + 1).toString(),
-      type: "ai",
-      content:
-        "Awesome! 🎉 Your study plan has been saved to your dashboard. You can track your progress and make adjustments anytime!\n\nReady to create another plan or need any modifications?",
-      timestamp: new Date(),
-    };
-    setMessages((prev) => [...prev, successMessage]);
-    setCurrentPlan(null);
+  const savePlanToDashboard = async () => {
+    if (!currentPlan) {
+      showToast("No study plan available to save", "error");
+      return;
+    }
+
+    try {
+      const response = await fetch("/api/save-plan", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          aiPlan: currentPlan,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to save plan");
+      }
+
+      // Show success toast
+      showToast(
+        "🎉 Study plan saved successfully! Check your Goals section to track progress.",
+        "success"
+      );
+
+      // Add success message to chat
+      const successMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: "ai",
+        content:
+          "Awesome! 🎉 Your AI-generated study plan has been saved and converted to trackable goals. You can now find it in your Goals section and track your progress!\n\nReady to create another plan or need any modifications to your current goals?",
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, successMessage]);
+      setCurrentPlan(null);
+    } catch (error) {
+      console.error("Error saving plan:", error);
+
+      // Show error toast
+      const errorMessage =
+        error instanceof Error ? error.message : "Please try again!";
+      showToast(`Failed to save plan: ${errorMessage}`, "error");
+
+      // Add error message to chat
+      const chatErrorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        type: "ai",
+        content: `Oops! I couldn't save your plan right now 🐝💔. ${errorMessage}\n\nDon't worry, your plan is still visible above. You can try saving it again, or let me know if you need help!`,
+        timestamp: new Date(),
+      };
+      setMessages((prev) => [...prev, chatErrorMessage]);
+    }
   };
 
   return (

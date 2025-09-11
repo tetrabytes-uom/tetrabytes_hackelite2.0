@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useToast } from "@/components/UI/Toast";
 import {
   Calendar,
   Plus,
@@ -37,6 +38,7 @@ interface ManualStudyPlan {
 export default function SchedulePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const { showToast } = useToast();
   const [editId, setEditId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [studyPlan, setStudyPlan] = useState<ManualStudyPlan>({
@@ -199,7 +201,10 @@ export default function SchedulePage() {
 
   const saveStudyPlan = async () => {
     if (!studyPlan.subject.trim() || studyPlan.modules.length === 0) {
-      alert("Please enter a subject name and add at least one module.");
+      showToast(
+        "Please enter a subject name and add at least one module.",
+        "warning"
+      );
       return;
     }
 
@@ -229,9 +234,9 @@ export default function SchedulePage() {
 
       if (response.ok) {
         const message = isEditMode
-          ? "Study plan updated successfully!"
-          : "Study plan saved successfully!";
-        alert(message);
+          ? "📚 Study plan updated successfully!"
+          : "🎯 Study plan saved successfully!";
+        showToast(message, "success");
         setStudyPlan({
           subject: "",
           modules: [],
@@ -255,10 +260,13 @@ export default function SchedulePage() {
         `Error ${isEditMode ? "updating" : "saving"} study plan:`,
         error
       );
-      alert(
+      const errorMessage =
+        error instanceof Error ? error.message : "Please try again.";
+      showToast(
         `Failed to ${
           isEditMode ? "update" : "save"
-        } study plan. Please try again.`
+        } study plan: ${errorMessage}`,
+        "error"
       );
     } finally {
       setIsSaving(false);

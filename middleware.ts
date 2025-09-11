@@ -16,7 +16,12 @@ export default withAuth(
 export const config = {
   matcher: [
     '/dashboard/:path*',
+    '/goals/:path*',
+    '/schedule/:path*',
+    '/ai-coach/:path*',
     '/api/ai-generated-schedule/:path*',
+    '/api/save-plan/:path*',
+    '/api/study-plans/:path*',
     // Add other protected routes here
   ]
 };

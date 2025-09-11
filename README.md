@@ -80,7 +80,54 @@ PlanBee addresses these challenges by generating **personalized, adaptive study 
 - **TypeScript** - Type checking
 - **Tailwind CSS** - Styling
 
-## 📋 Prerequisites
+## � Dependencies
+
+### Core Dependencies
+
+```json
+{
+  "@google/generative-ai": "^0.24.1",
+  "bcryptjs": "^3.0.2",
+  "framer-motion": "^12.23.12",
+  "lucide-react": "^0.542.0",
+  "mongoose": "^8.18.0",
+  "next": "15.5.0",
+  "next-auth": "^4.24.11",
+  "react": "19.1.0",
+  "react-dom": "19.1.0",
+  "recharts": "^3.2.0",
+  "zod": "^4.1.5"
+}
+```
+
+### Development Dependencies
+
+```json
+{
+  "@eslint/eslintrc": "^3",
+  "@tailwindcss/postcss": "^4",
+  "@types/node": "20.19.13",
+  "@types/react": "19.1.12",
+  "@types/react-dom": "^19",
+  "eslint": "^9",
+  "eslint-config-next": "15.5.0",
+  "tailwindcss": "^4",
+  "typescript": "5.9.2"
+}
+```
+
+### Key Dependencies Overview
+
+- **@google/generative-ai**: Powers the AI study coach functionality
+- **bcryptjs**: Password hashing for secure authentication
+- **framer-motion**: Smooth animations and transitions
+- **lucide-react**: Beautiful icons throughout the application
+- **mongoose**: MongoDB object modeling for database operations
+- **next-auth**: Authentication and session management
+- **recharts**: Data visualization for analytics and progress tracking
+- **zod**: TypeScript-first schema validation
+
+## �📋 Prerequisites
 
 Before running this project, ensure you have the following installed:
 

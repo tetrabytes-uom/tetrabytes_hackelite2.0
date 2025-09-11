@@ -39,9 +39,11 @@ export default function SettingsPage() {
   }, [status, router]);
 
   if (status === "loading") {
-    return <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#70A961]"></div>
-    </div>;
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-[#70A961]"></div>
+      </div>
+    );
   }
 
   if (!session) {
@@ -174,7 +176,7 @@ export default function SettingsPage() {
                 Manage your account settings and study preferences
               </p>
             </div>
-            
+
             {/* Tab Navigation */}
             <div className="bg-white rounded-lg shadow-sm mb-6">
               <div className="border-b">
@@ -222,10 +224,12 @@ export default function SettingsPage() {
                       Set Your Study Availability
                     </h2>
                     <p className="text-gray-600">
-                      Mark the times when you're available to study. This will be used to generate your personalized daily timetables based on your study plans.
+                      Mark the times when you&apos;re available to study. This
+                      will be used to generate your personalized daily
+                      timetables based on your study plans.
                     </p>
                   </div>
-                  
+
                   <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
                     <div className="flex items-start">
                       <div className="flex-shrink-0">
@@ -236,47 +240,61 @@ export default function SettingsPage() {
                           How it works
                         </h3>
                         <p className="mt-1 text-sm text-blue-700">
-                          Click and drag on the grid below to select your available study times. 
-                          Once set, you'll be able to generate smart timetables from your study plans that respect these time slots.
+                          Click and drag on the grid below to select your
+                          available study times. Once set, you&apos;ll be able
+                          to generate smart timetables from your study plans
+                          that respect these time slots.
                         </p>
                       </div>
                     </div>
                   </div>
-                  
+
                   <Availability />
                 </div>
               )}
 
               {activeTab === "profile" && (
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Profile Settings</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                    Profile Settings
+                  </h2>
                   <div className="space-y-4">
                     <div className="flex items-center justify-between py-3 border-b">
                       <div>
                         <h3 className="font-medium">Study Reminders</h3>
-                        <p className="text-sm text-gray-500">Get notified when it's time to study</p>
+                        <p className="text-sm text-gray-500">
+                          Get notified when it&apos;s time to study
+                        </p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" defaultChecked />
+                        <input
+                          type="checkbox"
+                          className="sr-only peer"
+                          defaultChecked
+                        />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#70A961]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#70A961]"></div>
                       </label>
                     </div>
-                    
+
                     <div className="flex items-center justify-between py-3 border-b">
                       <div>
                         <h3 className="font-medium">Email Notifications</h3>
-                        <p className="text-sm text-gray-500">Receive updates about your study progress</p>
+                        <p className="text-sm text-gray-500">
+                          Receive updates about your study progress
+                        </p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" className="sr-only peer" />
                         <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#70A961]/20 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#70A961]"></div>
                       </label>
                     </div>
-                    
+
                     <div className="flex items-center justify-between py-3">
                       <div>
                         <h3 className="font-medium">Dark Mode</h3>
-                        <p className="text-sm text-gray-500">Switch to dark theme</p>
+                        <p className="text-sm text-gray-500">
+                          Switch to dark theme
+                        </p>
                       </div>
                       <label className="relative inline-flex items-center cursor-pointer">
                         <input type="checkbox" className="sr-only peer" />
@@ -289,36 +307,70 @@ export default function SettingsPage() {
 
               {activeTab === "notifications" && (
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-4">Notification Settings</h2>
+                  <h2 className="text-xl font-semibold text-gray-900 mb-4">
+                    Notification Settings
+                  </h2>
                   <div className="space-y-6">
                     <div>
-                      <h3 className="text-lg font-medium text-gray-900 mb-3">Study Reminders</h3>
+                      <h3 className="text-lg font-medium text-gray-900 mb-3">
+                        Study Reminders
+                      </h3>
                       <div className="space-y-3">
                         <label className="flex items-center">
-                          <input type="checkbox" className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]" defaultChecked />
-                          <span className="ml-3 text-sm text-gray-700">15 minutes before study session</span>
+                          <input
+                            type="checkbox"
+                            className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]"
+                            defaultChecked
+                          />
+                          <span className="ml-3 text-sm text-gray-700">
+                            15 minutes before study session
+                          </span>
                         </label>
                         <label className="flex items-center">
-                          <input type="checkbox" className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]" />
-                          <span className="ml-3 text-sm text-gray-700">Daily study plan summary</span>
+                          <input
+                            type="checkbox"
+                            className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]"
+                          />
+                          <span className="ml-3 text-sm text-gray-700">
+                            Daily study plan summary
+                          </span>
                         </label>
                         <label className="flex items-center">
-                          <input type="checkbox" className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]" />
-                          <span className="ml-3 text-sm text-gray-700">Weekly progress report</span>
+                          <input
+                            type="checkbox"
+                            className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]"
+                          />
+                          <span className="ml-3 text-sm text-gray-700">
+                            Weekly progress report
+                          </span>
                         </label>
                       </div>
                     </div>
-                    
+
                     <div>
-                      <h3 className="text-lg font-medium text-gray-900 mb-3">Goal Achievements</h3>
+                      <h3 className="text-lg font-medium text-gray-900 mb-3">
+                        Goal Achievements
+                      </h3>
                       <div className="space-y-3">
                         <label className="flex items-center">
-                          <input type="checkbox" className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]" defaultChecked />
-                          <span className="ml-3 text-sm text-gray-700">When you complete a study module</span>
+                          <input
+                            type="checkbox"
+                            className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]"
+                            defaultChecked
+                          />
+                          <span className="ml-3 text-sm text-gray-700">
+                            When you complete a study module
+                          </span>
                         </label>
                         <label className="flex items-center">
-                          <input type="checkbox" className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]" defaultChecked />
-                          <span className="ml-3 text-sm text-gray-700">When you reach study milestones</span>
+                          <input
+                            type="checkbox"
+                            className="rounded border-gray-300 text-[#70A961] focus:ring-[#70A961]"
+                            defaultChecked
+                          />
+                          <span className="ml-3 text-sm text-gray-700">
+                            When you reach study milestones
+                          </span>
                         </label>
                       </div>
                     </div>

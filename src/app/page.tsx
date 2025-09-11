@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import Welcome from '@/components/layouts/Welcome';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import Loading from '@/components/UI/Loading';
 
 export default function Home() {
   const { status } = useSession();
@@ -18,7 +19,9 @@ export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center">
       {status === 'loading' ? (
-        <span className="text-[#888] text-sm mt-7">Loading...</span>
+        <span className="text-[#888] text-sm mt-7">
+          <Loading />
+        </span>
       ) : status === 'authenticated' ? (
         <span className="text-[#888] text-sm mt-7">Redirecting...</span>
       ) : (

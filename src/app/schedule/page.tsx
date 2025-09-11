@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Calendar,
@@ -37,7 +37,7 @@ interface ManualStudyPlan {
 export default function SchedulePage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [editId, setEditId] = useState<string | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [studyPlan, setStudyPlan] = useState<ManualStudyPlan>({
     subject: "",
@@ -64,6 +64,13 @@ export default function SchedulePage() {
     { icon: Settings, label: "Settings", href: "/settings", active: false },
   ];
 
+  useEffect(() => {
+    // Only run on client side
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("edit");
+    if (id) setEditId(id);
+  }, []);
+
   // Redirect to login if not authenticated
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -80,7 +87,6 @@ export default function SchedulePage() {
 
   // Check for edit mode and load existing plan
   useEffect(() => {
-    const editId = searchParams.get("edit");
     if (editId && status === "authenticated") {
       setIsEditMode(true);
       setEditingPlanId(editId);
@@ -121,7 +127,7 @@ export default function SchedulePage() {
 
       loadPlanForEditing(editId);
     }
-  }, [searchParams, status, router]);
+  }, [editId, status, router]);
 
   const addModule = () => {
     if (!newModuleName.trim()) return;

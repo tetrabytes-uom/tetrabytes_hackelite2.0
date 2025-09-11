@@ -4,6 +4,7 @@ export interface UserType {
   password: string;
   name: string;
   image: string;
+  role: "User" | "Admin";
   createdAt: Date;
   updatedAt: Date;
 }

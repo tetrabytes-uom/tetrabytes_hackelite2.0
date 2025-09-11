@@ -20,6 +20,11 @@ const UserSchema = new Schema<UserType>(
       type: String,
       required: [true, 'Name is required'],
     },
+    role: {
+      type: String,
+      enum: ['User', 'Admin'],
+      default: 'User',
+    },
   },
   {
     timestamps: true,

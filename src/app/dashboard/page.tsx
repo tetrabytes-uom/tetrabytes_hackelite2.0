@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import {
   Target,
   Brain,
@@ -185,7 +186,7 @@ export default function Dashboard() {
               <ul className="space-y-2">
                 {sidebarItems.map((item, index) => (
                   <li key={index}>
-                    <a
+                    <Link
                       href={item.href}
                       className={`flex items-center px-4 py-3 text-sm font-medium rounded-xl transition-colors ${
                         item.active
@@ -195,7 +196,7 @@ export default function Dashboard() {
                     >
                       <item.icon className="h-5 w-5 mr-3" />
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -347,7 +348,10 @@ export default function Dashboard() {
                   </p>
                 </button>
 
-                <button className="bg-gradient-to-br from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg md:col-span-2 xl:col-span-1">
+                <button
+                  onClick={() => router.push("/analytics")}
+                  className="bg-gradient-to-br from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg md:col-span-2 xl:col-span-1"
+                >
                   <div className="flex items-center justify-between mb-4">
                     <BarChart3 className="h-10 w-10" />
                     <div className="w-2 h-2 bg-black rounded-full"></div>

@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 import { Users, Target, Award, BookOpen } from 'lucide-react';
 
 const AboutPage: React.FC = () => {
-  // ✅ put features in an array
   const features = [
     {
       icon: <Target className="h-6 w-6 text-[#70A961]" />,
@@ -32,12 +31,11 @@ const AboutPage: React.FC = () => {
     },
   ];
 
-  // ✅ put team members in an array
   const teamMembers = [
-    'Ishan Hansaka Silva',
-    'T. M. Heshan Maduwantha Yatigammana',
-    'U. Chami Praveesha De Silva',
-    'Maleesha Nuwanthi Kolombage',
+    {name : 'Ishan Hansaka Silva', image: "/ishan.jpg"},
+    {name : 'Heshan Maduwantha Yatigammana', image: "/heshan.jpg"},
+    {name : 'Chami Praveesha De Silva', image: "/praveesha.jpg"},
+    {name : 'Maleesha Nuwanthi Kolombage', image: "/maleesha.jpg"},
   ];
 
   return (
@@ -170,7 +168,7 @@ const AboutPage: React.FC = () => {
             University of Moratuwa
           </p>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-            {teamMembers.map((member: string, index: number) => (
+            {teamMembers.map((member, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -179,9 +177,20 @@ const AboutPage: React.FC = () => {
                 className="rounded-xl bg-gray-50 p-4 text-center"
               >
                 <div className="mb-3 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#70A961]/10">
-                  <Users className="h-8 w-8 text-[#70A961]" />
+                  {member.image ? (
+                    <div className="relative h-16 w-16 rounded-full overflow-hidden">
+                      <Image
+                        src={member.image}
+                        alt={member.name}
+                        fill
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                  ) : (
+                    <Users className="h-8 w-8 text-[#70A961]" />
+                  )}
                 </div>
-                <h3 className="font-semibold text-gray-800">{member}</h3>
+                <h3 className="font-semibold text-gray-800">{member.name}</h3>
               </motion.div>
             ))}
           </div>

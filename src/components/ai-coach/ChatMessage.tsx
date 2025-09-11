@@ -10,6 +10,7 @@ interface Message {
 
 interface ChatMessageProps {
   message: Message;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   currentPlan?: any;
   onSavePlan?: () => void;
 }
@@ -118,30 +119,34 @@ export default function ChatMessage({
                   <h4 className="text-md font-semibold text-gray-900 mb-3">
                     Study Plan Breakdown:
                   </h4>
-                  {currentPlan.subGoals.map((goal: any, index: number) => (
-                    <div
-                      key={goal.id || index}
-                      className="bg-white rounded-lg p-4 border border-gray-200"
-                    >
-                      <div className="flex items-start justify-between mb-2">
-                        <h5 className="text-sm font-semibold text-gray-900">
-                          {goal.title}
-                        </h5>
-                        <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
-                          {goal.day}
-                        </span>
+                  
+                  {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    currentPlan.subGoals.map((goal: any, index: number) => (
+                      <div
+                        key={goal.id || index}
+                        className="bg-white rounded-lg p-4 border border-gray-200"
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <h5 className="text-sm font-semibold text-gray-900">
+                            {goal.title}
+                          </h5>
+                          <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                            {goal.day}
+                          </span>
+                        </div>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {goal.description}
+                        </p>
+                        <div className="flex items-center gap-4 text-xs text-gray-500">
+                          <span className="flex items-center gap-1">
+                            <Clock className="h-3 w-3" />
+                            {goal.duration}
+                          </span>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        {goal.description}
-                      </p>
-                      <div className="flex items-center gap-4 text-xs text-gray-500">
-                        <span className="flex items-center gap-1">
-                          <Clock className="h-3 w-3" />
-                          {goal.duration}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                    ))
+                  }
                 </div>
               )}
             </div>

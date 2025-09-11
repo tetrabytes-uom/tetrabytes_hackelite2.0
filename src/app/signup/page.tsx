@@ -175,7 +175,7 @@ export default function Register() {
           
           <div className="mt-8 text-center">
             <p className="text-sm text-gray-600">
-              Already have an account? <Link href="/login" className="text-[#329f6a] font-semibold hover:text-[#2a8559] transition-colors duration-200">Sign in</Link>
+              Already have an account? <Link href="/signin" className="text-[#329f6a] font-semibold hover:text-[#2a8559] transition-colors duration-200">Sign in</Link>
             </p>
           </div>
         </div>

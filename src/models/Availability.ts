@@ -18,6 +18,7 @@ if (process.env.NODE_ENV !== "production" && mongoose.models.Availability) {
 const AvailabilitySchema = new Schema(
   {
     // ← STRING, not ObjectId
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     userId:   { type: String, required: true, index: true, unique: true, set: (v: any) => String(v) },
     timezone: { type: String, required: true, default: "Asia/Colombo" },
     week:     { type: [DaySchema], default: () => [...Array(7)].map((_, i) => ({ day: i, slots: [] })) },

@@ -115,6 +115,7 @@ export default function Availability() {
     }
     window.addEventListener('mouseup', handleUp);
     return () => window.removeEventListener('mouseup', handleUp);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // debounced autosave when week/timezone change (after initial load)
@@ -127,6 +128,7 @@ export default function Availability() {
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [week, timezone]);
 
   const rows = useMemo(

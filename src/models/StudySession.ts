@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { StudySessionType } from '@/types/StudySessionType';
 
-const studySessionSchema = new Schema<StudySessionType>(
+const StudySessionSchema = new Schema<StudySessionType>(
   {
     planId: { type: Schema.Types.ObjectId, ref: 'StudyPlan', required: true },
     day: { type: Number, required: true },
@@ -23,4 +23,4 @@ const studySessionSchema = new Schema<StudySessionType>(
 );
 
 export default mongoose.models.StudySession ||
-  mongoose.model<StudySessionType>('StudySession', studySessionSchema);
+  mongoose.model<StudySessionType>('StudySession', StudySessionSchema);

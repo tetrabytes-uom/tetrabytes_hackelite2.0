@@ -1,7 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { UserType } from '../types/Usertype';
 
-const userSchema = new Schema<UserType>(
+const UserSchema = new Schema<UserType>(
   {
     email: {
       type: String,
@@ -20,6 +20,11 @@ const userSchema = new Schema<UserType>(
       type: String,
       required: [true, 'Name is required'],
     },
+    role: {
+      type: String,
+      enum: ['User', 'Admin'],
+      default: 'User',
+    },
   },
   {
     timestamps: true,
@@ -27,4 +32,4 @@ const userSchema = new Schema<UserType>(
 );
 
 export default mongoose.models.User ||
-  mongoose.model<UserType>('User', userSchema);
+  mongoose.model<UserType>('User', UserSchema);

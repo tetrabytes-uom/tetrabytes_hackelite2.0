@@ -54,7 +54,8 @@ export async function GET() {
     );
 
     const totalRecentHours = recentSessions.reduce((total, session) =>
-      total + session.tasks.reduce((taskTotal, task) => taskTotal + task.estimatedTime, 0), 0
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      total + session.tasks.reduce((taskTotal: any, task: { estimatedTime: any; }) => taskTotal + task.estimatedTime, 0), 0
     );
 
     const averageDailyHours = totalRecentHours / 30;

@@ -8,7 +8,6 @@ import { motion } from 'framer-motion';
 import { Users, Target, Award, BookOpen } from 'lucide-react';
 
 const AboutPage: React.FC = () => {
-  // ✅ put features in an array
   const features = [
     {
       icon: <Target className="h-6 w-6 text-[#70A961]" />,
@@ -32,7 +31,6 @@ const AboutPage: React.FC = () => {
     },
   ];
 
-  // ✅ put team members in an array
   const teamMembers = [
     'Ishan Hansaka Silva',
     'T. M. Heshan Maduwantha Yatigammana',

@@ -1,32 +1,65 @@
-"use client";
+'use client';
 
-import React from "react";
-import Navbar from "@/components/UI/Navbar";
-import Footer from "@/components/UI/Footer";
-import { motion } from "framer-motion";
-import { Bell, Lock, User, Shield, Globe } from "lucide-react";
+import React from 'react';
+import Footer from '@/components/UI/Footer';
+import { motion } from 'framer-motion';
+import {
+  Bell,
+  Lock,
+  User,
+  Shield,
+  Globe,
+  ArrowLeft,
+  Settings,
+} from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const SettingsPage: React.FC = () => {
+  const { data: session } = useSession();
+  const router = useRouter();
+
   return (
     <div className="bg-gradient-to-b from-white to-gray-50 min-h-screen">
-      <Navbar />
+      <header className="bg-white shadow-sm border-b sticky top-0 z-50">
+        <div className="px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => router.push('/dashboard')}
+                className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+              >
+                <ArrowLeft className="h-5 w-5" />
+              </button>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-[#70A961] to-[#5f8c4b] rounded-xl flex items-center justify-center">
+                  <Settings className="h-6 w-6 text-white" />
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-gray-900">Settings</h1>
+                  <p className="text-sm text-gray-500">
+                    Manage your account preferences, notifications, and privacy.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <span className="text-sm text-gray-600">
+                {session?.user?.name || 'Student'}
+              </span>
+              <div className="w-8 h-8 bg-black rounded-full flex items-center justify-center">
+                <span className="text-white text-sm font-medium">
+                  {(session?.user?.name || session?.user?.email || 'S')
+                    .charAt(0)
+                    .toUpperCase()}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
 
       <section className="mx-auto max-w-5xl px-4 py-16">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-12 text-center"
-        >
-          <h1 className="bg-gradient-to-r from-[#70A961] to-[#4B7340] bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
-            Settings
-          </h1>
-          <p className="mt-3 text-gray-600">
-            Manage your account preferences, notifications, and privacy.
-          </p>
-        </motion.div>
-
         {/* Settings Sections */}
         <div className="space-y-8">
           {/* Profile */}

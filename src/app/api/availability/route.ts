@@ -12,7 +12,7 @@ const slotSchema = z
   })
   .refine(
     (s: { startMin: number; endMin: number }) => s.startMin < s.endMin,
-    { message: "startMin must be < endMin" }
+    { message: "Start time must be before end time" }
   );
 
 const daySchema = z.object({

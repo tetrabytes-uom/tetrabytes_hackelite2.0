@@ -1,105 +1,81 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   Target,
-  Brain,
-  Plus,
-  Clock,
-  TrendingUp,
   Home,
+  Brain,
+  Calendar,
+  BarChart3,
   Settings,
   Menu,
   X,
-  Calendar,
-  BarChart3,
-  ArrowRight,
   LogOut,
+  Clock,
+  BookOpen,
+  Plus,
 } from "lucide-react";
 
-export default function Dashboard() {
+interface Module {
+  name: string;
+  timeAllocation: number;
+}
+
+interface ManualStudyPlan {
+  id: string;
+  subject: string;
+  modules: Module[];
+  totalTime: number;
+  createdAt: string;
+}
+
+export default function GoalsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userGoalsCount, setUserGoalsCount] = useState(0);
-  const [userStudyPlans, setUserStudyPlans] = useState<ManualStudyPlan[]>([]);
-
-  interface ManualStudyPlan {
-    id: string;
-    subject: string;
-    modules: { name: string; timeAllocation: number }[];
-    totalTime: number;
-    createdAt: string;
-  }
-
-  // Move all useState hooks to the top before any conditional logic
-  const [activeGoals] = useState(
-    userStudyPlans.length > 0
-      ? userStudyPlans.map((plan) => ({
-          id: plan.id,
-          title: plan.subject,
-          progress: Math.floor(Math.random() * 40) + 30, // Random progress between 30-70%
-          daysLeft: Math.floor(Math.random() * 20) + 5, // Random days left
-          totalDays: Math.floor(Math.random() * 30) + 14, // Random total days
-          type: "manual" as const,
-        }))
-      : [
-          {
-            id: 1,
-            title: "Learn Python Programming",
-            progress: 65,
-            daysLeft: 8,
-            totalDays: 14,
-            type: "manual" as const,
-          },
-          {
-            id: 2,
-            title: "JavaScript Fundamentals",
-            progress: 30,
-            daysLeft: 12,
-            totalDays: 21,
-            type: "ai-generated" as const,
-          },
-        ]
-  );
-
-  const stats = {
-    totalGoals: userGoalsCount,
-    activeGoals: userGoalsCount > 0 ? Math.min(userGoalsCount, 2) : 0, // Assume some are active
-    completedGoals: Math.max(0, userGoalsCount - 2), // Assume some are completed
-    totalStudyHours: userGoalsCount * 10, // Rough estimate
-  };
+  const [studyPlans, setStudyPlans] = useState<ManualStudyPlan[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const sidebarItems = [
-    { icon: Home, label: "Dashboard", href: "/dashboard", active: true },
+    { icon: Home, label: "Dashboard", href: "/dashboard", active: false },
     { icon: Brain, label: "AI Coach", href: "/ai-coach", active: false },
-    { icon: Target, label: "My Goals", href: "/goals", active: false },
+    { icon: Target, label: "My Goals", href: "/goals", active: true },
     { icon: Calendar, label: "Schedule", href: "/schedule", active: false },
     { icon: BarChart3, label: "Analytics", href: "/analytics", active: false },
     { icon: Settings, label: "Settings", href: "/settings", active: false },
   ];
 
-  // Load user goals count on component mount
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/signin");
+    }
+  }, [status, router]);
+
+  // Load study plans on component mount
   useEffect(() => {
     if (status === "authenticated") {
-      loadUserGoalsCount();
+      loadStudyPlans();
     }
   }, [status]);
 
-  const loadUserGoalsCount = async () => {
+  const loadStudyPlans = async () => {
+    setLoading(true);
     try {
       const response = await fetch("/api/study-plans");
       if (response.ok) {
         const data = await response.json();
-        const plans = data.studyPlans || [];
-        setUserGoalsCount(plans.length);
-        setUserStudyPlans(plans.slice(0, 2)); // Show first 2 plans as active
+        setStudyPlans(data.studyPlans || []);
+      } else {
+        console.error("Failed to load study plans");
       }
     } catch (error) {
-      console.error("Error loading goals count:", error);
+      console.error("Error loading study plans:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -227,7 +203,7 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <button
-                  onClick={() => signOut({ callbackUrl: "/" })}
+                  onClick={() => router.push("/")}
                   className="p-2 text-gray-400 hover:text-red-600 transition-colors"
                   title="Sign out"
                 >
@@ -243,12 +219,13 @@ export default function Dashboard() {
           <div className="px-4 sm:px-6 lg:px-8 py-6">
             <div className="mb-8">
               <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                Dashboard
+                My Goals
               </h1>
               <p className="text-gray-600">
-                Track your learning progress and manage your study goals
+                View and manage all your study goals and learning plans
               </p>
             </div>
+
             {/* Stats Overview */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
               <div className="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
@@ -258,7 +235,7 @@ export default function Dashboard() {
                       Total Goals
                     </p>
                     <p className="text-3xl font-bold text-black">
-                      {stats.totalGoals}
+                      {studyPlans.length}
                     </p>
                   </div>
                   <div className="p-3 bg-yellow-100 rounded-xl">
@@ -271,30 +248,17 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600 mb-1">
-                      Active Goals
+                      Total Modules
                     </p>
                     <p className="text-3xl font-bold text-black">
-                      {stats.activeGoals}
+                      {studyPlans.reduce(
+                        (total, plan) => total + plan.modules.length,
+                        0
+                      )}
                     </p>
                   </div>
-                  <div className="p-3 bg-green-100 rounded-xl">
-                    <TrendingUp className="h-6 w-6 text-[#70A961]" />
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600 mb-1">
-                      Completed
-                    </p>
-                    <p className="text-3xl font-bold text-black">
-                      {stats.completedGoals}
-                    </p>
-                  </div>
-                  <div className="p-3 bg-black rounded-xl">
-                    <Target className="h-6 w-6 text-white" />
+                  <div className="p-3 bg-blue-100 rounded-xl">
+                    <BookOpen className="h-6 w-6 text-blue-600" />
                   </div>
                 </div>
               </div>
@@ -306,15 +270,44 @@ export default function Dashboard() {
                       Study Hours
                     </p>
                     <p className="text-3xl font-bold text-black">
-                      {stats.totalStudyHours}
+                      {studyPlans.reduce(
+                        (total, plan) => total + plan.totalTime,
+                        0
+                      )}
                     </p>
                   </div>
-                  <div className="p-3 bg-yellow-100 rounded-xl">
-                    <Clock className="h-6 w-6 text-yellow-600" />
+                  <div className="p-3 bg-green-100 rounded-xl">
+                    <Clock className="h-6 w-6 text-[#70A961]" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600 mb-1">
+                      This Month
+                    </p>
+                    <p className="text-3xl font-bold text-black">
+                      {
+                        studyPlans.filter((plan) => {
+                          const planDate = new Date(plan.createdAt);
+                          const now = new Date();
+                          return (
+                            planDate.getMonth() === now.getMonth() &&
+                            planDate.getFullYear() === now.getFullYear()
+                          );
+                        }).length
+                      }
+                    </p>
+                  </div>
+                  <div className="p-3 bg-purple-100 rounded-xl">
+                    <Calendar className="h-6 w-6 text-purple-600" />
                   </div>
                 </div>
               </div>
             </div>
+
             {/* Quick Actions */}
             <div className="mb-8">
               <h2 className="text-xl font-semibold text-black mb-6">
@@ -322,109 +315,127 @@ export default function Dashboard() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 <button
-                  onClick={() => router.push("/ai-coach")}
-                  className="bg-gradient-to-br from-[#70A961] to-[#5f8c4b] hover:from-[#5f8c4b] hover:to-[#4e7a3e] text-white rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
-                >
-                  <div className="flex items-center justify-between mb-4">
-                    <Brain className="h-10 w-10" />
-                    <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2">AI Study Coach</h3>
-                  <p className="text-green-100 text-sm leading-relaxed">
-                    Let AI create a personalized study plan tailored to your
-                    learning style and schedule
-                  </p>
-                </button>
-
-                <button
                   onClick={() => router.push("/schedule")}
-                  className="bg-gradient-to-br from-black to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
+                  className="bg-gradient-to-br from-[#70A961] to-[#5f8c4b] hover:from-[#5f8c4b] hover:to-[#4e7a3e] text-white rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
                 >
                   <div className="flex items-center justify-between mb-4">
                     <Plus className="h-10 w-10" />
                     <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
                   </div>
                   <h3 className="text-xl font-semibold mb-2">
-                    Create Manual Goal
+                    Create New Goal
                   </h3>
-                  <p className="text-gray-300 text-sm leading-relaxed">
-                    Set up your own custom study goals with specific timelines
-                    and milestones
+                  <p className="text-green-100 text-sm leading-relaxed">
+                    Add a new study goal with custom modules and time allocation
                   </p>
                 </button>
 
-                <button className="bg-gradient-to-br from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg md:col-span-2 xl:col-span-1">
+                <button
+                  onClick={() => router.push("/ai-coach")}
+                  className="bg-gradient-to-br from-black to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <Brain className="h-10 w-10" />
+                    <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">AI Study Coach</h3>
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    Let AI create a personalized study plan for you
+                  </p>
+                </button>
+
+                <button
+                  onClick={() => router.push("/dashboard")}
+                  className="bg-gradient-to-br from-yellow-500 to-yellow-600 hover:from-yellow-400 hover:to-yellow-500 text-black rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg md:col-span-2 xl:col-span-1"
+                >
                   <div className="flex items-center justify-between mb-4">
                     <BarChart3 className="h-10 w-10" />
                     <div className="w-2 h-2 bg-black rounded-full"></div>
                   </div>
-                  <h3 className="text-xl font-semibold mb-2">View Analytics</h3>
+                  <h3 className="text-xl font-semibold mb-2">View Dashboard</h3>
                   <p className="text-yellow-900 text-sm leading-relaxed">
-                    Track your progress and see detailed insights about your
-                    learning journey
+                    See your overall progress and statistics
                   </p>
                 </button>
               </div>
-            </div>{" "}
-            {/* Active Goals */}
+            </div>
+
+            {/* Study Goals List */}
             <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
               <div className="px-6 py-5 border-b border-gray-200 bg-gray-50/50">
                 <div className="flex items-center justify-between">
                   <h2 className="text-xl font-semibold text-gray-900">
-                    Active Study Goals
+                    Your Study Goals
                   </h2>
                   <span className="text-sm text-gray-500">
-                    {userGoalsCount} active
+                    {studyPlans.length} goal{studyPlans.length !== 1 ? "s" : ""}
                   </span>
                 </div>
               </div>
 
-              {activeGoals.length > 0 ? (
+              {loading ? (
+                <div className="p-12 text-center">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#70A961] mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading your goals...</p>
+                </div>
+              ) : studyPlans.length > 0 ? (
                 <div className="divide-y divide-gray-100">
-                  {activeGoals.map((goal) => (
+                  {studyPlans.map((plan) => (
                     <div
-                      key={goal.id}
+                      key={plan.id}
                       className="p-6 hover:bg-gray-50/50 transition-colors"
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
                           <div className="flex items-center gap-3 mb-2">
                             <h3 className="text-lg font-semibold text-gray-900">
-                              {goal.title}
+                              {plan.subject}
                             </h3>
-                            <span
-                              className={`px-3 py-1 text-xs font-medium rounded-full ${
-                                goal.type === "ai-generated"
-                                  ? "bg-[#70A961]/10 text-[#70A961] border border-[#70A961]/20"
-                                  : "bg-gray-100 text-gray-700 border border-gray-200"
-                              }`}
-                            >
-                              {goal.type === "ai-generated"
-                                ? "🤖 AI Generated"
-                                : "✋ Manual"}
+                            <span className="px-3 py-1 text-xs font-medium rounded-full bg-[#70A961]/10 text-[#70A961] border border-[#70A961]/20">
+                              ✋ Manual Plan
                             </span>
                           </div>
                           <p className="text-sm text-gray-600">
-                            Day {goal.totalDays - goal.daysLeft + 1} of{" "}
-                            {goal.totalDays} • {goal.daysLeft} days remaining
+                            {plan.modules.length} module
+                            {plan.modules.length !== 1 ? "s" : ""} •{" "}
+                            {plan.totalTime} total hours
                           </p>
                         </div>
                       </div>
 
+                      {/* Modules Preview */}
                       <div className="mb-4">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="text-sm font-medium text-gray-700">
-                            Progress
-                          </span>
-                          <span className="text-sm font-bold text-black">
-                            {goal.progress}%
-                          </span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                          <div
-                            className="bg-gradient-to-r from-[#70A961] to-[#5f8c4b] h-3 rounded-full transition-all duration-500 ease-out"
-                            style={{ width: `${goal.progress}%` }}
-                          ></div>
+                        <h4 className="text-sm font-medium text-gray-700 mb-2">
+                          Modules:
+                        </h4>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+                          {plan.modules.slice(0, 6).map((module, index) => (
+                            <div
+                              key={index}
+                              className="flex items-center gap-2 p-2 bg-gray-100 rounded-lg"
+                            >
+                              <div className="w-6 h-6 bg-[#70A961] rounded-full flex items-center justify-center">
+                                <span className="text-white text-xs font-medium">
+                                  {module.name.charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p className="text-sm font-medium text-gray-900 truncate">
+                                  {module.name}
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                  {module.timeAllocation}h
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                          {plan.modules.length > 6 && (
+                            <div className="flex items-center justify-center p-2 bg-gray-100 rounded-lg">
+                              <span className="text-sm text-gray-600">
+                                +{plan.modules.length - 6} more
+                              </span>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -432,12 +443,19 @@ export default function Dashboard() {
                         <div className="flex items-center gap-4">
                           <div className="flex items-center gap-1 text-xs text-gray-500">
                             <Clock className="h-3 w-3" />
-                            <span>Updated 2h ago</span>
+                            <span>
+                              Created{" "}
+                              {new Date(plan.createdAt).toLocaleDateString()}
+                            </span>
                           </div>
                         </div>
-                        <button className="inline-flex items-center gap-1 text-[#70A961] hover:text-[#5f8c4b] text-sm font-medium transition-colors">
-                          View Details
-                          <ArrowRight className="h-4 w-4" />
+                        <button
+                          onClick={() =>
+                            router.push(`/schedule?edit=${plan.id}`)
+                          }
+                          className="inline-flex items-center gap-1 text-[#70A961] hover:text-[#5f8c4b] text-sm font-medium transition-colors"
+                        >
+                          Edit Plan
                         </button>
                       </div>
                     </div>
@@ -449,27 +467,27 @@ export default function Dashboard() {
                     <Target className="h-8 w-8 text-gray-400" />
                   </div>
                   <h3 className="text-lg font-semibold text-black mb-2">
-                    No active goals yet
+                    No study goals yet
                   </h3>
                   <p className="text-gray-600 mb-6 max-w-md mx-auto">
                     Start your learning journey by creating your first study
-                    goal. Choose between AI-generated plans or create your own
-                    custom schedule.
+                    goal. You can create manual plans or use our AI coach for
+                    personalized recommendations.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
                     <button
-                      onClick={() => router.push("/ai-coach")}
-                      className="inline-flex items-center justify-center gap-2 bg-[#70A961] hover:bg-[#5f8c4b] text-white px-6 py-3 rounded-xl font-medium transition-colors"
-                    >
-                      <Brain className="h-4 w-4" />
-                      AI Study Coach
-                    </button>
-                    <button
                       onClick={() => router.push("/schedule")}
-                      className="inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                      className="inline-flex items-center justify-center gap-2 bg-[#70A961] hover:bg-[#5f8c4b] text-white px-6 py-3 rounded-xl font-medium transition-colors"
                     >
                       <Plus className="h-4 w-4" />
                       Create Manual Goal
+                    </button>
+                    <button
+                      onClick={() => router.push("/ai-coach")}
+                      className="inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                    >
+                      <Brain className="h-4 w-4" />
+                      AI Study Coach
                     </button>
                   </div>
                 </div>

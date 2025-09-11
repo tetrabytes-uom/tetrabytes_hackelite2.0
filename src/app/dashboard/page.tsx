@@ -25,30 +25,7 @@ export default function Dashboard() {
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (status === "unauthenticated") {
-      router.push("/signin");
-    }
-  }, [status, router]);
-
-  // Show loading spinner while checking authentication
-  if (status === "loading") {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#70A961] mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // Show nothing while redirecting
-  if (status === "unauthenticated") {
-    return null;
-  }
-
+  // Move all useState hooks to the top before any conditional logic
   const [activeGoals] = useState([
     {
       id: 1,
@@ -83,6 +60,30 @@ export default function Dashboard() {
     { icon: BarChart3, label: "Analytics", href: "/analytics", active: false },
     { icon: Settings, label: "Settings", href: "/settings", active: false },
   ];
+
+  // Redirect to login if not authenticated
+  useEffect(() => {
+    if (status === "unauthenticated") {
+      router.push("/signin");
+    }
+  }, [status, router]);
+
+  // Show loading spinner while checking authentication
+  if (status === "loading") {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#70A961] mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show nothing while redirecting
+  if (status === "unauthenticated") {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -285,7 +286,10 @@ export default function Dashboard() {
                 Quick Actions
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                <button className="bg-gradient-to-br from-[#70A961] to-[#5f8c4b] hover:from-[#5f8c4b] hover:to-[#4e7a3e] text-white rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg">
+                <button
+                  onClick={() => router.push("/ai-coach")}
+                  className="bg-gradient-to-br from-[#70A961] to-[#5f8c4b] hover:from-[#5f8c4b] hover:to-[#4e7a3e] text-white rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
+                >
                   <div className="flex items-center justify-between mb-4">
                     <Brain className="h-10 w-10" />
                     <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
@@ -415,7 +419,10 @@ export default function Dashboard() {
                     custom schedule.
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                    <button className="inline-flex items-center justify-center gap-2 bg-[#70A961] hover:bg-[#5f8c4b] text-white px-6 py-3 rounded-xl font-medium transition-colors">
+                    <button
+                      onClick={() => router.push("/ai-coach")}
+                      className="inline-flex items-center justify-center gap-2 bg-[#70A961] hover:bg-[#5f8c4b] text-white px-6 py-3 rounded-xl font-medium transition-colors"
+                    >
                       <Brain className="h-4 w-4" />
                       AI Study Coach
                     </button>

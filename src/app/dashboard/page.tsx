@@ -25,53 +25,32 @@ export default function Dashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [userGoalsCount, setUserGoalsCount] = useState(0);
-  const [userStudyPlans, setUserStudyPlans] = useState<ManualStudyPlan[]>([]);
-
-  interface ManualStudyPlan {
-    id: string;
-    subject: string;
-    modules: { name: string; timeAllocation: number }[];
-    totalTime: number;
-    createdAt: string;
-  }
 
   // Move all useState hooks to the top before any conditional logic
-  const [activeGoals] = useState(
-    userStudyPlans.length > 0
-      ? userStudyPlans.map((plan) => ({
-          id: plan.id,
-          title: plan.subject,
-          progress: Math.floor(Math.random() * 40) + 30, // Random progress between 30-70%
-          daysLeft: Math.floor(Math.random() * 20) + 5, // Random days left
-          totalDays: Math.floor(Math.random() * 30) + 14, // Random total days
-          type: "manual" as const,
-        }))
-      : [
-          {
-            id: 1,
-            title: "Learn Python Programming",
-            progress: 65,
-            daysLeft: 8,
-            totalDays: 14,
-            type: "manual" as const,
-          },
-          {
-            id: 2,
-            title: "JavaScript Fundamentals",
-            progress: 30,
-            daysLeft: 12,
-            totalDays: 21,
-            type: "ai-generated" as const,
-          },
-        ]
-  );
+  const [activeGoals] = useState([
+    {
+      id: 1,
+      title: "Learn Python Programming",
+      progress: 65,
+      daysLeft: 8,
+      totalDays: 14,
+      type: "manual",
+    },
+    {
+      id: 2,
+      title: "JavaScript Fundamentals",
+      progress: 30,
+      daysLeft: 12,
+      totalDays: 21,
+      type: "ai-generated",
+    },
+  ]);
 
   const stats = {
-    totalGoals: userGoalsCount,
-    activeGoals: userGoalsCount > 0 ? Math.min(userGoalsCount, 2) : 0, // Assume some are active
-    completedGoals: Math.max(0, userGoalsCount - 2), // Assume some are completed
-    totalStudyHours: userGoalsCount * 10, // Rough estimate
+    totalGoals: 5,
+    activeGoals: 2,
+    completedGoals: 3,
+    totalStudyHours: 47,
   };
 
   const sidebarItems = [
@@ -83,26 +62,12 @@ export default function Dashboard() {
     { icon: Settings, label: "Settings", href: "/settings", active: false },
   ];
 
-  // Load user goals count on component mount
+  // Redirect to login if not authenticated
   useEffect(() => {
-    if (status === "authenticated") {
-      loadUserGoalsCount();
+    if (status === "unauthenticated") {
+      router.push("/signin");
     }
-  }, [status]);
-
-  const loadUserGoalsCount = async () => {
-    try {
-      const response = await fetch("/api/study-plans");
-      if (response.ok) {
-        const data = await response.json();
-        const plans = data.studyPlans || [];
-        setUserGoalsCount(plans.length);
-        setUserStudyPlans(plans.slice(0, 2)); // Show first 2 plans as active
-      }
-    } catch (error) {
-      console.error("Error loading goals count:", error);
-    }
-  };
+  }, [status, router]);
 
   // Show loading spinner while checking authentication
   if (status === "loading") {
@@ -330,10 +295,7 @@ export default function Dashboard() {
                   </p>
                 </button>
 
-                <button
-                  onClick={() => router.push("/schedule")}
-                  className="bg-gradient-to-br from-black to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg"
-                >
+                <button className="bg-gradient-to-br from-black to-gray-800 hover:from-gray-800 hover:to-gray-700 text-white rounded-xl p-6 text-left transition-all duration-200 transform hover:scale-[1.02] shadow-lg">
                   <div className="flex items-center justify-between mb-4">
                     <Plus className="h-10 w-10" />
                     <div className="w-2 h-2 bg-yellow-300 rounded-full"></div>
@@ -368,7 +330,7 @@ export default function Dashboard() {
                     Active Study Goals
                   </h2>
                   <span className="text-sm text-gray-500">
-                    {userGoalsCount} active
+                    {activeGoals.length} active
                   </span>
                 </div>
               </div>
@@ -458,10 +420,7 @@ export default function Dashboard() {
                       <Brain className="h-4 w-4" />
                       AI Study Coach
                     </button>
-                    <button
-                      onClick={() => router.push("/schedule")}
-                      className="inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl font-medium transition-colors"
-                    >
+                    <button className="inline-flex items-center justify-center gap-2 bg-gray-800 hover:bg-gray-900 text-white px-6 py-3 rounded-xl font-medium transition-colors">
                       <Plus className="h-4 w-4" />
                       Create Manual Goal
                     </button>

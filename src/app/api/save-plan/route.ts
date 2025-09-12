@@ -39,6 +39,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Convert AI plan to ManualStudyPlan format
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const modules = aiPlan.subGoals.map((subGoal: any) => {
       // Extract hours from duration string (e.g., "2 hours" -> 2)
       const durationMatch = subGoal.duration?.match(/(\d+(?:\.\d+)?)/);
@@ -51,6 +52,7 @@ export async function POST(request: NextRequest) {
     });
 
     // Calculate total time
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const totalTime = modules.reduce((sum: number, module: any) => sum + module.timeAllocation, 0);
 
     // Create new study plan from AI data

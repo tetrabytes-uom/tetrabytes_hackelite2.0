@@ -2,8 +2,7 @@
 
 <div align="center">
   <img src="public/Bee.png" alt="PlanBee Logo" width="100" height="100">
-  <h3>AI-Powered Study Assistant for Smart Learning</h3>
-  <p>Build consistent study habits with an assistant that adapts to your schedule and goals</p>
+  <h3>AI-Powered Study Assistant for Smart Learning</h3>   **Note:** Replace the placeholder values with your actual credentials. Never commit this file to version control.ld consistent study habits with an assistant that adapts to your schedule and goals</p>
 </div>
 
 ## 📋 Table of Contents
@@ -161,53 +160,10 @@ Before running this project, ensure you have the following installed:
    Create a `.env.local` file in the root directory with the following variables:
 
    ```env
-   # ===========================================
-   # REQUIRED ENVIRONMENT VARIABLES
-   # ===========================================
-
-   # Database Configuration
-   MONGODB_URI=mongodb://localhost:27017/planbee
-   # For production, use MongoDB Atlas or similar:
-   # MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/planbee
-
-   # Authentication (NextAuth.js)
-   NEXTAUTH_SECRET=your-super-secret-key-here-change-this-in-production
-   NEXTAUTH_URL=http://localhost:3000
-   # For production:
-   # NEXTAUTH_URL=https://your-domain.com
-
-   # Google AI API (Required for AI Study Coach)
-   GOOGLE_AI_API_KEY=your-google-ai-api-key-here
-
-   # ===========================================
-   # OPTIONAL ENVIRONMENT VARIABLES
-   # ===========================================
-
-   # Application URL (for production deployments)
-   NEXT_PUBLIC_APP_URL=https://your-domain.com
-
-   # Email Configuration (for notifications - optional)
-   EMAIL_SERVER_HOST=smtp.gmail.com
-   EMAIL_SERVER_PORT=587
-   EMAIL_SERVER_USER=your-email@gmail.com
-   EMAIL_SERVER_PASSWORD=your-app-password
-   EMAIL_FROM=noreply@planbee.com
-
-   # Analytics & Monitoring (optional)
-   NEXT_PUBLIC_ANALYTICS_ID=your-google-analytics-id
-   SENTRY_DSN=your-sentry-dsn-for-error-tracking
-
-   # Development Settings
-   NODE_ENV=development
-   DEBUG=true
-
-   # ===========================================
-   # SECURITY NOTES
-   # ===========================================
-   # - Never commit .env files to version control
-   # - Use strong, unique secrets for production
-   # - Rotate API keys regularly
-   # - Use environment-specific values (dev/staging/prod)
+   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/planbee
+   NEXTAUTH_SECRET=your-nextauth-secret-key-here
+   NEXTAUTH_URL=http://localhost:3002
+   GEMINI_API_KEY=your-gemini-api-key-here
    ```
 
    ### Environment Variables Explanation:
